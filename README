@@ -1,0 +1,7 @@
+req's for this script:
+
+  npm install -g request
+  npm install -g jsdom
+  npm install -g seq
+
+
