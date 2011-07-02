@@ -36,7 +36,7 @@ request { uri: 'http://build.chromium.org/f/chromium/snapshots/Mac/' }, (error, 
     console.log 'Latest Build = ' + build
 
     #Seq().seq(->) chaining
-    #https://github.com/substack/node-seq
+    #see https://github.com/substack/node-seq
 
     #variables
     uri = "http://build.chromium.org/f/chromium/snapshots/Mac/#{build}/chrome-mac.zip"
@@ -46,27 +46,17 @@ request { uri: 'http://build.chromium.org/f/chromium/snapshots/Mac/' }, (error, 
 
     Seq()
       #download chromium
-      .seq(->
-        console.log 'downloading from: ' + uri
+      .seq ->
         spawn 'curl', [uri, '-o', tmp]
-      )
       #unzip it into tmp
-      .seq(->
-        console.log 'unzipping ' + tmp
+      .seq ->
         spawn 'unzip', ['-qod', '/tmp/', tmp]
-      )
       #remove current chromium
-      .seq(->
-        console.log 'deleting current chromium'
+      .seq ->
         spawn 'rm', ['-rf', chromium]
-      )
       #move unzipped newest chromium into applications
-      .seq(->
-        console.log 'moving unzipped chrome into /Applications'
+      .seq ->
         spawn 'mv', [chromium_tmp, chromium]
-      )
       #delete tmp chromium
-      .seq(->
-        console.log 'deleting temporary chrome'
+      .seq ->
         spawn 'rm', [chromium_tmp]
-      )
