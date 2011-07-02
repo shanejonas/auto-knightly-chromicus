@@ -6,8 +6,11 @@ jsdom = require 'jsdom'
 {spawn} = require 'child_process'
 Seq = require 'seq'
 
-#Script Title
-#TODO: ascii art this shit up
+#Auto-Knight - Chrome-icus
+###
+  TODO: ascii art this shit up
+###
+
 console.log 'Chromium Nightly Downloader/Upgrader'
 
 #get latest build from scraping page
