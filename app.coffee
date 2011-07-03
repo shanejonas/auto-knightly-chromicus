@@ -12,7 +12,6 @@ libc = new FFI.Library null,
   "system": ["int32", ["string"]]
 
 run = libc.system
-Seq = require 'seq'
 
 #Auto-Knight - Chrome-icus
 ###
@@ -46,32 +45,27 @@ request { uri: 'http://build.chromium.org/f/chromium/snapshots/Mac/' }, (error, 
 
     console.log 'Latest Build = ' + build
 
-    #Seq().seq(->) chaining
-    #see https://github.com/substack/node-seq
-
     #variables
     uri = "http://build.chromium.org/f/chromium/snapshots/Mac/#{build}/chrome-mac.zip"
     tmp = '/tmp/chrome-mac.zip'
     chromium = '/Applications/Chromium.app'
     chromium_tmp = '/tmp/chrome-mac/Chromium.app/'
 
-    #delete any tmp chromium
-    run "rm -rf #{tmp}"
-
-    #download chromium
-    run "curl #{uri} -o #{tmp}"
-
-    #unzip it into tmp
-    run "unzip -qod /tmp #{tmp}"
-
-    #remove current chromium
-    run "rm -rf #{chromium}"
-
-    #move unzipped newest chromium into applications
-    run "mv #{chromium_tmp} #{chromium}"
-
-    #delete tmp chromium
-    run "rm -rf #{chromium_tmp}"
+    commands = [
+      #delete any tmp chromium
+      "rm -rf #{tmp}"
+      #download chromium
+      "curl #{uri} -o #{tmp}"
+      #unzip it into tmp
+      "unzip -qod /tmp #{tmp}"
+      #remove current chromium
+      "rm -rf #{chromium}"
+      #move unzipped newest chromium into applications
+      "mv #{chromium_tmp} #{chromium}"
+      #delete tmp chromium
+      "rm -rf #{chromium_tmp}"
+    ]
     
-    console.log('Chromium Upgrade Complete..')
-
+    run command for command in commands
+    
+    console.log 'Chromium Upgrade Complete..'
