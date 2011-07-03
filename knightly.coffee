@@ -3,26 +3,50 @@
 #includes
 request = require 'request'
 jsdom = require 'jsdom'
-#{spawn} = require 'child_process'
 
-#node-ffi ftw for system calls
-#WARNING: ninjas only
+###
+  WARNING: ninjas only
+###
+########################
 FFI = require('node-ffi')
 libc = new FFI.Library null,
   "system": ["int32", ["string"]]
-
 run = libc.system
+########################
 
 #Auto-Knight - Chrome-icus
 ###
-  TODO: ascii art this shit up
+   _         _                          _       _     _   _       
+  /_\  _   _| |_ ___         /\ /\_ __ (_) __ _| |__ | |_| |_   _ 
+ //_\\| | | | __/ _ \ _____ / //_/ '_ \| |/ _` | '_ \| __| | | | |
+/  _  \ |_| | || (_) |_____/ __ \| | | | | (_| | | | | |_| | |_| |
+\_/ \_/\__,_|\__\___/      \/  \/|_| |_|_|\__, |_| |_|\__|_|\__, |
+                                          |___/             |___/ 
+  CHROMICUS
+TODO: 
+    - refactor a ton
+    - config object
+    - commonjs this shit?
 ###
 
-console.log 'Chromium Nightly Downloader/Upgrader'
+console.log '+-+-+-+-+-+-+-+-+-+-+-+-+-+'
+console.log '|A|u|t|o|-|K|n|i|g|h|t|l|y|'
+console.log '+-+-+-+-+-+-+-+-+-+-+-+-+-+'
+console.log '|CHROMICUS|--+-+-+-|+-+-+-|'
+console.log '+-+-+-+-+-+-+-+-+-+-+-+-+-+'
+
+#configs
+build = null
+uri = "http://build.chromium.org/f/chromium/snapshots/Mac/#{build?}/chrome-mac.zip"
+#tmp zip
+tmp = '/tmp/chrome-mac.zip'
+#chromium app location
+chromium = '/Applications/Chromium.app'
+#chrome temp location
+chromium_tmp = '/tmp/chrome-mac/Chromium.app/'
 
 #get latest build from scraping page
 request { uri: 'http://build.chromium.org/f/chromium/snapshots/Mac/' }, (error, response, body) ->
-  build = null
 
   #log some error shit if needed
   if error && response.statusCode isnt 200
@@ -44,13 +68,9 @@ request { uri: 'http://build.chromium.org/f/chromium/snapshots/Mac/' }, (error, 
     build = $('td a', build).attr('href').split('/')[0]
 
     console.log 'Latest Build = ' + build
+    uri = "http://build.chromium.org/f/chromium/snapshots/Mac/#{build}/chrome-mac.zip" || null
 
-    #variables
-    uri = "http://build.chromium.org/f/chromium/snapshots/Mac/#{build}/chrome-mac.zip"
-    tmp = '/tmp/chrome-mac.zip'
-    chromium = '/Applications/Chromium.app'
-    chromium_tmp = '/tmp/chrome-mac/Chromium.app/'
-
+    #shell commands
     commands = [
       #delete any tmp chromium
       "rm -rf #{tmp}"
@@ -68,4 +88,4 @@ request { uri: 'http://build.chromium.org/f/chromium/snapshots/Mac/' }, (error, 
     
     run command for command in commands
     
-    console.log 'Chromium Upgrade Complete..'
+    console.log '+-+Auto-Knightly Complete+-+'

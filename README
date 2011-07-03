@@ -1,7 +1,19 @@
+   _         _                          _       _     _   _       
+  /_\  _   _| |_ ___         /\ /\_ __ (_) __ _| |__ | |_| |_   _ 
+ //_\\| | | | __/ _ \ _____ / //_/ '_ \| |/ _` | '_ \| __| | | | |
+/  _  \ |_| | || (_) |_____/ __ \| | | | | (_| | | | | |_| | |_| |
+\_/ \_/\__,_|\__\___/      \/  \/|_| |_|_|\__, |_| |_|\__|_|\__, |
+                                          |___/             |___/ 
+  CHROMICUS
+
+TODO: 
+    - refactor a ton
+    - config object
+    - commonjs this shit?
+
 req's for this script:
 
   npm install -g request
   npm install -g jsdom
-  npm install -g seq
-
+  npm install -g node-ffi
 
