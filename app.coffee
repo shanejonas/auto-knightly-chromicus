@@ -51,27 +51,27 @@ request { uri: 'http://build.chromium.org/f/chromium/snapshots/Mac/' }, (error, 
 
     #variables
     uri = "http://build.chromium.org/f/chromium/snapshots/Mac/#{build}/chrome-mac.zip"
-#    tmp = '/tmp/chrome-mac.zip'
-#    chromium = '/Applications/Chromium.app'
-#    chromium_tmp = '/tmp/chrome-mac/Chromium.app/'
+    tmp = '/tmp/chrome-mac.zip'
+    chromium = '/Applications/Chromium.app'
+    chromium_tmp = '/tmp/chrome-mac/Chromium.app/'
 
     #delete any tmp chromium
-    run "rm -rf /tmp/chrome-mac"
+    run "rm -rf #{tmp}"
 
     #download chromium
-    run "curl #{uri} -o /tmp/chrome-mac.zip"
+    run "curl #{uri} -o #{tmp}"
 
     #unzip it into tmp
-    run "unzip -qod /tmp /tmp/chrome-mac.zip"
+    run "unzip -qod /tmp #{tmp}"
 
     #remove current chromium
-    run "rm -rf /Applications/Chromium.app"
+    run "rm -rf #{chromium}"
 
     #move unzipped newest chromium into applications
-    run "mv /tmp/chrome-mac/Chromium.app/ /Applications/Chromium.app"
+    run "mv #{chromium_tmp} #{chromium}"
 
     #delete tmp chromium
-    run "rm -rf /tmp/chrome-mac"
+    run "rm -rf #{chromium_tmp}"
     
-    console.log('Install Complete..')
+    console.log('Chromium Upgrade Complete..')
 
