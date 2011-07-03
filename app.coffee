@@ -3,7 +3,15 @@
 #includes
 request = require 'request'
 jsdom = require 'jsdom'
-{spawn} = require 'child_process'
+#{spawn} = require 'child_process'
+
+#node-ffi ftw for system calls
+#WARNING: ninjas only
+FFI = require('node-ffi')
+libc = new FFI.Library null,
+  "system": ["int32", ["string"]]
+
+run = libc.system
 Seq = require 'seq'
 
 #Auto-Knight - Chrome-icus
@@ -43,23 +51,27 @@ request { uri: 'http://build.chromium.org/f/chromium/snapshots/Mac/' }, (error, 
 
     #variables
     uri = "http://build.chromium.org/f/chromium/snapshots/Mac/#{build}/chrome-mac.zip"
-    tmp = '/tmp/chrome-mac.zip'
-    chromium = '/Applications/Chromium.app'
-    chromium_tmp = '/tmp/chrome-mac/Chromium.app/'
+#    tmp = '/tmp/chrome-mac.zip'
+#    chromium = '/Applications/Chromium.app'
+#    chromium_tmp = '/tmp/chrome-mac/Chromium.app/'
 
-    Seq()
-      #download chromium
-      .seq ->
-        spawn 'curl', [uri, '-o', tmp]
-      #unzip it into tmp
-      .seq ->
-        spawn 'unzip', ['-qod', '/tmp/', tmp]
-      #remove current chromium
-      .seq ->
-        spawn 'rm', ['-rf', chromium]
-      #move unzipped newest chromium into applications
-      .seq ->
-        spawn 'mv', [chromium_tmp, chromium]
-      #delete tmp chromium
-      .seq ->
-        spawn 'rm', [chromium_tmp]
+    #delete any tmp chromium
+    run "rm -rf /tmp/chrome-mac"
+
+    #download chromium
+    run "curl #{uri} -o /tmp/chrome-mac.zip"
+
+    #unzip it into tmp
+    run "unzip -qod /tmp /tmp/chrome-mac.zip"
+
+    #remove current chromium
+    run "rm -rf /Applications/Chromium.app"
+
+    #move unzipped newest chromium into applications
+    run "mv /tmp/chrome-mac/Chromium.app/ /Applications/Chromium.app"
+
+    #delete tmp chromium
+    run "rm -rf /tmp/chrome-mac"
+    
+    console.log('Install Complete..')
+
