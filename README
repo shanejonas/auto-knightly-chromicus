@@ -7,13 +7,12 @@
   CHROMICUS
 
 TODO: 
-    - refactor a ton
-    - config object
-    - commonjs this shit?
+    - refactor
 
 req's for this script:
+  node.js and CoffeeScript installed
 
-  npm install -g request
-  npm install -g jsdom
-  npm install -g node-ffi
+  node dependancies:
+    npm install -g request
+    npm install -g node-ffi
 
